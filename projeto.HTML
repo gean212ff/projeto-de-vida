@@ -1,0 +1,655 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Projeto de Vida: Matemática para Realizar Sonhos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #f6f9fc 0%, #eef2f7 100%);
+            color: #1a2c3e;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* container principal */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+        }
+
+        /* cabeçalho hero */
+        .hero {
+            background: linear-gradient(135deg, #0b2b3b, #1b4f6e);
+            border-radius: 2rem;
+            padding: 2.5rem 2rem;
+            margin-bottom: 2.5rem;
+            color: white;
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero h1 span {
+            background: #ffb347;
+            font-size: 1.4rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            color: #1e2f3a;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            opacity: 0.9;
+            margin-bottom: 1.8rem;
+        }
+
+        .badge-math {
+            background: rgba(255,255,240,0.2);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* grid principal */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* cards estilo glassmorphism */
+        .card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(2px);
+            border-radius: 1.75rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            padding: 1.5rem 1.8rem;
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.15);
+            background: rgba(255,255,255,0.95);
+        }
+
+        .card h2 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            border-left: 6px solid #ff914d;
+            padding-left: 1rem;
+            margin-bottom: 1.4rem;
+            color: #1f4e6e;
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1.2rem 0 0.5rem 0;
+            color: #2c5a7a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* inputs e formulários */
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+            color: #2c3e4e;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid #cbd5e1;
+            background: white;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ff914d;
+            box-shadow: 0 0 0 2px rgba(255,145,77,0.2);
+        }
+
+        button {
+            background: #ff914d;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 0.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            background: #e67e3a;
+            transform: scale(0.98);
+        }
+
+        .result-area {
+            background: #f0f4f9;
+            padding: 1rem;
+            border-radius: 1.2rem;
+            margin-top: 1rem;
+            font-weight: 500;
+            border-left: 4px solid #ff914d;
+        }
+
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 30px;
+            height: 12px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #ff914d;
+            width: 0%;
+            height: 100%;
+            border-radius: 30px;
+            transition: width 0.5s ease;
+        }
+
+        .goal-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .goal-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 0.6rem 1rem;
+            margin-bottom: 0.6rem;
+            border-radius: 1.2rem;
+            border: 1px solid #dee4ec;
+        }
+
+        .delete-goal {
+            background: #cbd5e1;
+            color: #1e293b;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            width: auto;
+            margin-top: 0;
+        }
+
+        .delete-goal:hover {
+            background: #f97316;
+            color: white;
+        }
+
+        .highlight {
+            font-weight: 800;
+            color: #e67e22;
+        }
+
+        .flex-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 0.8rem;
+        }
+
+        .btn-secondary {
+            background: #2c6e9e;
+        }
+        .btn-secondary:hover {
+            background: #1e4f73;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            border-top: 1px solid #cbd5e1;
+            font-size: 0.85rem;
+            color: #4a627a;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 1rem;
+            }
+            .hero h1 {
+                font-size: 1.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Seção hero -->
+    <div class="hero">
+        <h1>
+            📐 Projeto de Vida 
+            <span>+ Matemática</span>
+        </h1>
+        <p>Organize metas, visualize conquistas e use a matemática financeira e estatística para transformar sonhos em planos reais.</p>
+        <div class="badge-math">🧮 Juros compostos · Metas SMART · Acompanhamento percentual</div>
+    </div>
+
+    <div class="dashboard">
+        <!-- CARD 1: Planejador financeiro (juros compostos) -->
+        <div class="card">
+            <h2>💰 Poupança para Sonhos</h2>
+            <p style="font-size:0.85rem; margin-bottom: 0.8rem;">Simule quanto você terá no futuro investindo um valor fixo mensal com juros compostos.</p>
+            <div class="input-group">
+                <label>📆 Valor mensal (R$)</label>
+                <input type="number" id="monthlyAmount" placeholder="Ex: 250" value="250">
+            </div>
+            <div class="input-group">
+                <label>⏱️ Prazo (anos)</label>
+                <input type="number" id="timeYears" placeholder="Ex: 5" value="5">
+            </div>
+            <div class="input-group">
+                <label>📈 Taxa de juros anual (%)</label>
+                <input type="number" step="0.1" id="interestRate" placeholder="Ex: 8.5" value="8.5">
+            </div>
+            <button id="calcFutureBtn">📊 Calcular Patrimônio Futuro</button>
+            <div id="futureResult" class="result-area">
+                💡 Clique em calcular para ver o montante acumulado.
+            </div>
+        </div>
+
+        <!-- CARD 2: Metas SMART & Acompanhamento de Progresso -->
+        <div class="card">
+            <h2>🎯 Metas & Progresso</h2>
+            <p style="font-size:0.85rem;">Defina seu objetivo principal (ex: "Comprar um carro", "Intercâmbio") e acompanhe o percentual financeiro atingido.</p>
+            <div class="input-group">
+                <label>🏆 Nome da Meta</label>
+                <input type="text" id="goalName" placeholder="Ex: Intercâmbio na Europa">
+            </div>
+            <div class="input-group">
+                <label>💰 Valor necessário (R$)</label>
+                <input type="number" id="targetAmount" placeholder="Valor total">
+            </div>
+            <div class="input-group">
+                <label>💵 Quanto já tem guardado? (R$)</label>
+                <input type="number" id="savedAmount" placeholder="Atual">
+            </div>
+            <button id="updateProgressBtn">📈 Atualizar Progresso</button>
+            <div id="progressArea">
+                <div class="progress-container">
+                    <div class="progress-fill" id="progressFillBar"></div>
+                </div>
+                <div id="progressText" class="result-area" style="margin-top: 0.5rem;">
+                    Meta: — | Percentual: 0%
+                </div>
+            </div>
+            <div class="flex-btns" style="margin-top: 12px;">
+                <button id="addGoalToListBtn" class="btn-secondary" style="width: 48%;">📌 Salvar Meta</button>
+                <button id="resetGoalBtn" style="width: 48%; background:#94a3b8;">🔄 Resetar Meta</button>
+            </div>
+            <h3>📋 Minhas Metas Salvas</h3>
+            <ul id="goalsList" class="goal-list">
+                <li style="opacity:0.6;">Nenhuma meta salva ainda</li>
+            </ul>
+        </div>
+
+        <!-- CARD 3: Planejador de tempo - semana dos objetivos -->
+        <div class="card">
+            <h2>📅 Cronograma Semanal</h2>
+            <p>Distribua horas de estudo/dedicação para sua meta principal e veja estatísticas de investimento de tempo.</p>
+            <div class="input-group">
+                <label>🕒 Horas dedicadas na semana (total)</label>
+                <input type="number" id="weeklyHours" placeholder="Ex: 12" value="8">
+            </div>
+            <div class="input-group">
+                <label>🏁 Prazo em semanas para concluir curso / preparação</label>
+                <input type="number" id="weeksDeadline" placeholder="Ex: 24" value="20">
+            </div>
+            <button id="calcTimeImpactBtn">⏳ Projetar horas totais</button>
+            <div id="timeResult" class="result-area">
+                ⏰ Nenhum cálculo ainda.
+            </div>
+            <div class="input-group" style="margin-top: 1rem;">
+                <label>✍️ Mini tarefa semanal (checklist)</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="taskInput" placeholder="Ex: estudar matemática financeira" style="flex:1">
+                    <button id="addTaskBtn" style="width: auto; padding: 0.7rem 1rem;">+</button>
+                </div>
+            </div>
+            <ul id="taskList" style="list-style: none; margin-top: 12px;">
+                <li style="font-size:0.8rem; color:#4b6e8a;">✔️ Adicione tarefas para não esquecer seus hábitos</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Seção extra de dicas matemáticas -->
+    <div class="card" style="background: #e9f1f5; margin-top: 0.5rem;">
+        <h2 style="border-left-color: #1e88e5;">🧠 Matemática aplicada aos seus objetivos</h2>
+        <p>🔹 <strong>Juros compostos:</strong> M = P × ((1+i)^n - 1)/i   (para aportes mensais). Use isso para multiplicar seu esforço.<br>
+        🔹 <strong>Regra de três e porcentagem:</strong> acompanhamento de metas financeiras.<br>
+        🔹 <strong>Planejamento de tempo:</strong> Se você dedicar H horas por semana, em S semanas terá H×S horas totais.<br>
+        🔁 <strong>Pequenas ações consistentes geram grandes resultados.</strong> Cada decisão matemática conta.</p>
+    </div>
+    <footer>
+        🌟 Projeto de Vida com Matemática Aplicada — Organize seus objetivos com dados, simulações e consistência. Transforme sonhos em equações reais.
+    </footer>
+</div>
+
+<script>
+    // ---- Gerenciamento de Metas Salvas (localStorage) ----
+    let savedGoals = [];
+
+    function loadGoalsFromStorage() {
+        const stored = localStorage.getItem("lifeGoals");
+        if(stored) {
+            savedGoals = JSON.parse(stored);
+        } else {
+            savedGoals = [];
+        }
+        renderGoalsList();
+    }
+
+    function saveGoalsToStorage() {
+        localStorage.setItem("lifeGoals", JSON.stringify(savedGoals));
+        renderGoalsList();
+    }
+
+    function renderGoalsList() {
+        const goalsListEl = document.getElementById("goalsList");
+        if(savedGoals.length === 0) {
+            goalsListEl.innerHTML = '<li style="opacity:0.6;">🎯 Nenhuma meta salva ainda. Adicione sua meta principal.</li>';
+            return;
+        }
+        goalsListEl.innerHTML = "";
+        savedGoals.forEach((goal, idx) => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <div><strong>${escapeHtml(goal.name)}</strong><br>
+                <span style="font-size:0.7rem;">R$ ${goal.target.toLocaleString()} | Guardado: R$ ${goal.saved.toLocaleString()} (${goal.percent}%)</span></div>
+                <button class="delete-goal" data-index="${idx}">🗑️</button>
+            `;
+            goalsListEl.appendChild(li);
+        });
+        document.querySelectorAll(".delete-goal").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const idx = parseInt(btn.getAttribute("data-index"));
+                savedGoals.splice(idx, 1);
+                saveGoalsToStorage();
+            });
+        });
+    }
+
+    function escapeHtml(str) {
+        if(!str) return "";
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === "&") return "&amp;";
+            if(m === "<") return "&lt;";
+            if(m === ">") return "&gt;";
+            return m;
+        });
+    }
+
+    function addNewGoal(goalName, targetAmountVal, savedAmountVal) {
+        if(!goalName.trim() || targetAmountVal <= 0) {
+            alert("Por favor, preencha nome da meta e valor necessário positivo.");
+            return false;
+        }
+        let savedVal = savedAmountVal < 0 ? 0 : savedAmountVal;
+        let percentCalc = (savedVal / targetAmountVal) * 100;
+        percentCalc = Math.min(100, Math.max(0, percentCalc));
+        const newGoal = {
+            name: goalName.trim(),
+            target: targetAmountVal,
+            saved: savedVal,
+            percent: percentCalc.toFixed(1)
+        };
+        savedGoals.push(newGoal);
+        saveGoalsToStorage();
+        return true;
+    }
+
+    // ---- CARD FINANCEIRO: JUROS COMPOSTOS (aportes mensais) ----
+    function calcularJurosCompostos(mensal, anos, taxaAnualPercent) {
+        if(mensal <= 0 || anos <= 0 || taxaAnualPercent < 0) return 0;
+        let taxaMensal = (taxaAnualPercent / 100) / 12;
+        let n = anos * 12;
+        if(taxaMensal === 0) return mensal * n;
+        let montante = mensal * ((Math.pow(1 + taxaMensal, n) - 1) / taxaMensal);
+        return montante;
+    }
+
+    const calcFutureBtn = document.getElementById("calcFutureBtn");
+    const futureResultDiv = document.getElementById("futureResult");
+    calcFutureBtn.addEventListener("click", () => {
+        let monthly = parseFloat(document.getElementById("monthlyAmount").value);
+        let years = parseFloat(document.getElementById("timeYears").value);
+        let annualRate = parseFloat(document.getElementById("interestRate").value);
+        if(isNaN(monthly) || isNaN(years) || isNaN(annualRate) || monthly < 0 || years <= 0) {
+            futureResultDiv.innerHTML = "⚠️ Preencha valores válidos (mensal >0, anos >0 e taxa válida).";
+            return;
+        }
+        let total = calcularJurosCompostos(monthly, years, annualRate);
+        let totalInvestido = monthly * years * 12;
+        let juros = total - totalInvestido;
+        futureResultDiv.innerHTML = `
+            <strong>🏦 Resultado da projeção:</strong><br>
+            📍 Montante final: <span class="highlight">R$ ${total.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span><br>
+            💵 Total investido: R$ ${totalInvestido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}<br>
+            📈 Juros ganhos: R$ ${juros.toLocaleString('pt-BR', {minimumFractionDigits: 2})}<br>
+            <small style="opacity:0.8;">✨ Juros compostos transformam pequenos aportes em grandes conquistas.</small>
+        `;
+    });
+
+    // ---- CARD METAS E PROGRESSO (atualização da barra + texto) ----
+    let currentGoal = {
+        name: "",
+        target: 0,
+        saved: 0
+    };
+
+    function updateProgressUI() {
+        const target = currentGoal.target;
+        const saved = currentGoal.saved;
+        let percent = 0;
+        if(target > 0) {
+            percent = (saved / target) * 100;
+            percent = Math.min(100, Math.max(0, percent));
+        }
+        const fillBar = document.getElementById("progressFillBar");
+        fillBar.style.width = percent + "%";
+        const targetStr = target > 0 ? `R$ ${target.toLocaleString()}` : "indefinido";
+        const savedStr = `R$ ${saved.toLocaleString()}`;
+        document.getElementById("progressText").innerHTML = `
+            🎯 Meta: <strong>${currentGoal.name || "Sem nome"}</strong> <br>
+            💰 Necessário: ${targetStr} | 🟢 Guardado: ${savedStr}<br>
+            📊 Progresso: ${percent.toFixed(1)}%
+        `;
+        if(percent >= 100 && target>0) {
+            document.getElementById("progressText").innerHTML += `<br><span style="color:#2b7a3e;">🎉 Parabéns! Meta financeira atingida! 🎉</span>`;
+        }
+    }
+
+    const updateProgressBtn = document.getElementById("updateProgressBtn");
+    updateProgressBtn.addEventListener("click", () => {
+        let goalNameInput = document.getElementById("goalName").value;
+        let targetVal = parseFloat(document.getElementById("targetAmount").value);
+        let savedVal = parseFloat(document.getElementById("savedAmount").value);
+        if(isNaN(targetVal) || targetVal <= 0) {
+            alert("Informe um valor necessário válido (maior que 0).");
+            return;
+        }
+        if(isNaN(savedVal)) savedVal = 0;
+        currentGoal.name = goalNameInput || "Meta personalizada";
+        currentGoal.target = targetVal;
+        currentGoal.saved = savedVal;
+        updateProgressUI();
+    });
+
+    // Salvar meta atual na lista de metas salvas
+    document.getElementById("addGoalToListBtn").addEventListener("click", () => {
+        if(currentGoal.target <= 0) {
+            alert("Defina primeiro uma meta válida (valor necessário positivo) no card superior e clique em 'Atualizar Progresso'.");
+            return;
+        }
+        let nome = currentGoal.name;
+        let valorTarget = currentGoal.target;
+        let savedVal = currentGoal.saved;
+        if(nome === "Meta personalizada" && document.getElementById("goalName").value.trim() !== "") {
+            nome = document.getElementById("goalName").value.trim();
+        }
+        addNewGoal(nome, valorTarget, savedVal);
+        alert(`Meta "${nome}" salva com sucesso!`);
+    });
+
+    document.getElementById("resetGoalBtn").addEventListener("click", () => {
+        currentGoal = { name: "", target: 0, saved: 0 };
+        document.getElementById("goalName").value = "";
+        document.getElementById("targetAmount").value = "";
+        document.getElementById("savedAmount").value = "";
+        updateProgressUI();
+        document.getElementById("progressFillBar").style.width = "0%";
+    });
+
+    // ---- Cronograma e horas totais
+    const calcTimeBtn = document.getElementById("calcTimeImpactBtn");
+    const timeResultDiv = document.getElementById("timeResult");
+    calcTimeBtn.addEventListener("click", () => {
+        let weeklyH = parseFloat(document.getElementById("weeklyHours").value);
+        let weeks = parseFloat(document.getElementById("weeksDeadline").value);
+        if(isNaN(weeklyH) || isNaN(weeks) || weeklyH <= 0 || weeks <= 0) {
+            timeResultDiv.innerHTML = "⏳ Preencha horas semanais (>0) e prazo em semanas (>0).";
+            return;
+        }
+        let totalHours = weeklyH * weeks;
+        let daysEquivalent = totalHours / 24;
+        timeResultDiv.innerHTML = `
+            ⏱️ <strong>Projeção de dedicação:</strong><br>
+            🧠 Total de horas investidas: <span class="highlight">${totalHours.toLocaleString()} horas</span><br>
+            📅 Equivalente a aproximadamente ${daysEquivalent.toFixed(1)} dias completos de foco.<br>
+            💪 Com disciplina, cada hora aproxima você da sua melhor versão.
+        `;
+    });
+
+    // Lista de tarefas (simples checklist interativo)
+    let tasks = [];
+    const taskInput = document.getElementById("taskInput");
+    const addTaskBtn = document.getElementById("addTaskBtn");
+    const taskListEl = document.getElementById("taskList");
+
+    function renderTasks() {
+        if(tasks.length === 0) {
+            taskListEl.innerHTML = '<li style="font-size:0.8rem; color:#4b6e8a;">📝 Adicione tarefas semanais para manter o foco!</li>';
+            return;
+        }
+        taskListEl.innerHTML = "";
+        tasks.forEach((task, idx) => {
+            const li = document.createElement("li");
+            li.style.display = "flex";
+            li.style.alignItems = "center";
+            li.style.justifyContent = "space-between";
+            li.style.background = "#ffffffaa";
+            li.style.borderRadius = "1rem";
+            li.style.marginBottom = "0.5rem";
+            li.style.padding = "0.4rem 0.8rem";
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = task.done;
+            checkbox.style.marginRight = "10px";
+            checkbox.addEventListener("change", (e) => {
+                tasks[idx].done = e.target.checked;
+                renderTasks();
+            });
+            const span = document.createElement("span");
+            span.innerText = task.text;
+            if(task.done) span.style.textDecoration = "line-through";
+            span.style.flex = "1";
+            const delBtn = document.createElement("button");
+            delBtn.innerText = "🗑️";
+            delBtn.style.width = "auto";
+            delBtn.style.padding = "0.2rem 0.6rem";
+            delBtn.style.background = "#cbd5e1";
+            delBtn.addEventListener("click", () => {
+                tasks.splice(idx, 1);
+                renderTasks();
+            });
+            li.appendChild(checkbox);
+            li.appendChild(span);
+            li.appendChild(delBtn);
+            taskListEl.appendChild(li);
+        });
+    }
+
+    addTaskBtn.addEventListener("click", () => {
+        const text = taskInput.value.trim();
+        if(text === "") {
+            alert("Digite uma tarefa.");
+            return;
+        }
+        tasks.push({ text: text, done: false });
+        taskInput.value = "";
+        renderTasks();
+    });
+
+    // Inicialização e sincronizar goals do localStorage
+    loadGoalsFromStorage();
+
+    // pré definição de exemplo prático: preencher campos de meta inicial exemplo
+    window.addEventListener("load", () => {
+        // Exemplo amigável
+        if(savedGoals.length === 0) {
+            // opcional: adicionar exemplo demonstrativo
+            // mas não obrigatório, apenas para exibir
+        }
+        // também pré-popula sugestão no card financeiro
+        document.getElementById("monthlyAmount").value = 350;
+        document.getElementById("timeYears").value = 4;
+        document.getElementById("interestRate").value = 9.0;
+        // quick progress demo
+        currentGoal.name = "Meu intercâmbio";
+        currentGoal.target = 28000;
+        currentGoal.saved = 4200;
+        document.getElementById("goalName").value = "Meu intercâmbio";
+        document.getElementById("targetAmount").value = 28000;
+        document.getElementById("savedAmount").value = 4200;
+        updateProgressUI();
+    });
+</script>
+</body>
+</html>
